@@ -21,7 +21,7 @@ const studentSchema = new mongoose.Schema({
         lowercase: true,
         validate: {
             validator: function (value) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
             },
             message: props => `Invalid email this mate : ${props.value}`
         }
