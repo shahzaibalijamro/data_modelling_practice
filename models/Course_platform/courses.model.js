@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 
+const enrolledSchema = new mongoose.Schema({
+    studentId: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref: "Student"
+    }
+}, { _id: false })
 
 const coursesSchema = new mongoose.Schema({
     title: {
@@ -10,8 +16,16 @@ const coursesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    
-},{timestamps:true})
+    teacherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Teacher",
+        required: true
+    },
+    studentsEnrolled: {
+        type: [enrolledSchema],
+        default: []
+    }
+}, { timestamps: true })
 
 
-export const Course = mongoose.model("Course",coursesSchema)
+export const Course = mongoose.model("Course", coursesSchema)

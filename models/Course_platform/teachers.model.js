@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+const currentlyTeaching = new mongoose.Schema({
+    current: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref: "Course"
+    }
+}, { _id: false })
+
 
 const teacherSchema = new mongoose.Schema({
     username : {
@@ -12,7 +19,13 @@ const teacherSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        validate: {
+            validator: function (value) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            },
+            message: props => `Invalid email this mate : ${props.value}`
+        }
     },
     password : {
         type: String,
@@ -20,11 +33,12 @@ const teacherSchema = new mongoose.Schema({
     },
     gender : {
         type: String,
-        enum: ["male","female"]
+        enum: ["male","female"],
+        required: true
     },
-    coursesteaching : {
-        type: String,
-        enum: ["teacher","student"]
+    coursesTeaching : {
+        type: [currentlyTeaching],
+        default: []
     },
 },{timestamps: true});
 
